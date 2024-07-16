@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: 'bePrepared'
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${APP.BD.URL}
+    username: ${APP.BD.USER}
+    password: ${APP.BD.PASS}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

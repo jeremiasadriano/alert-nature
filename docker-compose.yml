@@ -5,9 +5,9 @@ services:
     image: postgres:16.0
     restart: on-failure
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASS}
-      POSTGRES_DB: ${POSTGRES_DATABASE}
+      POSTGRES_DB: ${APP.BD}
+      POSTGRES_USER: ${APP.BD.USER}
+      POSTGRES_PASSWORD: ${APP.BD.PASS}
     ports:
       - '5432:5432'
     volumes:
