@@ -1,13 +1,12 @@
-version: '3.8'
 services:
   db:
     container_name: 'bePreparedDb'
     image: postgres:16.0
     restart: on-failure
     environment:
-      POSTGRES_DB: ${APP.BD}
-      POSTGRES_USER: ${APP.BD.USER}
-      POSTGRES_PASSWORD: ${APP.BD.PASS}
+      POSTGRES_DB: "{APP.BD}"
+      POSTGRES_USER: "{APP.BD.USER}"
+      POSTGRES_PASSWORD: "{APP.BD.PASS}"
     ports:
       - '5432:5432'
     volumes:
