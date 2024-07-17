@@ -15,7 +15,7 @@ import lombok.Setter;
 @Entity
 public class Citizens {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Citizens")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Citizens_gen")
     private Long id;
     private String phone;
     private String deviceId;

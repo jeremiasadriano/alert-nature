@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@SequenceGenerator(name = "distritos_seq", sequenceName = "distritos_gen", allocationSize = 1, initialValue = 1)
+@SequenceGenerator(sequenceName = "distritos_seq", name = "distritos_gen", allocationSize = 1, initialValue = 1)
 @Table(name = "distritos")
 @Entity
 public class City {
