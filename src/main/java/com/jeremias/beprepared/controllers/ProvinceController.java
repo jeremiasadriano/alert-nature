@@ -1,13 +1,11 @@
 package com.jeremias.beprepared.controllers;
 
-import com.jeremias.beprepared.models.dto.response.ProvinceResponseDto;
+import com.jeremias.beprepared.dto.response.ProvinceResponse;
 import com.jeremias.beprepared.services.ProvinceService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,8 +17,13 @@ public class ProvinceController {
     private final ModelMapper mapper;
 
     @GetMapping("/provinces")
-    public ResponseEntity<List<ProvinceResponseDto>> getAllProvinces() {
+    public ResponseEntity<List<ProvinceResponse>> getAllProvinces() {
         var response = provinceService.getAllProvinces();
-        return ResponseEntity.ok(response.stream().map((e) -> mapper.map(e, ProvinceResponseDto.class)).toList());
+        return ResponseEntity.ok(response.stream().map((e) -> this.mapper.map(e, ProvinceResponse.class)).toList());
+    }
+
+    @GetMapping("/province/{provinceId}")
+    public ResponseEntity<ProvinceResponse> getProvinceById(@PathVariable Long provinceId) {
+        return ResponseEntity.ok(this.mapper.map(provinceService.getProvinceById(provinceId), ProvinceResponse.class));
     }
 }

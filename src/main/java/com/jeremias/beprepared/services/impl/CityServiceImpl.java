@@ -4,6 +4,7 @@ import com.jeremias.beprepared.exceptions.handlers.EntityNotFoundException;
 import com.jeremias.beprepared.models.City;
 import com.jeremias.beprepared.repositories.CityRepository;
 import com.jeremias.beprepared.services.CityService;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +21,12 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public List<City> getCitiesByProvinceId(Long provinceId) {
-        return cityRepository.findAllByProvinceId(provinceId).orElseThrow(() ->
-                new EntityNotFoundException("Cities not found with such id!")
-        );
+    public List<City> getCitiesByProvinceId(@NonNull Long provinceId) {
+        return cityRepository.findAllByProvinceId(provinceId).orElseThrow(() -> new EntityNotFoundException("Cities not found with such id!"));
     }
 
     @Override
     public City getCityById(Long id) {
-        return cityRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("City not found with such id!")
-        );
+        return cityRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("City not found with such id!"));
     }
 }

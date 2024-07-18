@@ -9,11 +9,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @RestControllerAdvice
 public class ExceptionsHandler extends ResponseEntityExceptionHandler {
-    ExceptionsModel exceptionsModel;
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ExceptionsModel> EntityNotFoundException(EntityNotFoundException notFound) {
-        exceptionsModel = new ExceptionsModel(HttpStatus.NOT_FOUND, notFound.getMessage());
+        var exceptionsModel = new ExceptionsModel(HttpStatus.NOT_FOUND, notFound.getMessage());
         return new ResponseEntity<>(exceptionsModel, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(EntityNotNullException.class)
+    public ResponseEntity<ExceptionsModel> EntityNotNullException(EntityNotNullException notNullException) {
+        var exceptionsModel = new ExceptionsModel(HttpStatus.BAD_REQUEST, notNullException.getMessage());
+        return new ResponseEntity<>(exceptionsModel, HttpStatus.BAD_REQUEST);
     }
 }
