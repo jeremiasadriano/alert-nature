@@ -10,5 +10,4 @@ target/
 *.ipr
 
 /.env
-#/bePrepared.log
 /bePrepared.**

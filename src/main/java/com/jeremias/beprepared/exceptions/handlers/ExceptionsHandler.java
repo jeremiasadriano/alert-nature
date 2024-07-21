@@ -21,4 +21,10 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         var exceptionsModel = new ExceptionsModel(HttpStatus.BAD_REQUEST, notNullException.getMessage());
         return new ResponseEntity<>(exceptionsModel, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(EntityAlreadyExistException.class)
+    public ResponseEntity<ExceptionsModel> EntityAlreadyExistException(EntityAlreadyExistException existException) {
+        var exceptionsModel = new ExceptionsModel(HttpStatus.CONFLICT, existException.getMessage());
+        return new ResponseEntity<>(exceptionsModel, HttpStatus.CONFLICT);
+    }
 }
