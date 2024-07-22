@@ -34,4 +34,35 @@ public class AlertController {
         var response = this.alertService.getAllAlerts().stream().map(this.alertModelMapper::map).toList();
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/alerts/")
+    public ResponseEntity<List<AlertResponse>> getAllAlertsByStatus(@RequestParam(name = "s", required = false, defaultValue = "true") Boolean status) {
+        var response = this.alertService.getAllAlertsByStatus(status).stream().map(this.alertModelMapper::map).toList();
+        return ResponseEntity.ok(response);
+
+    }
+
+    @GetMapping("/alerts/cities/{cityId}/")
+    public ResponseEntity<List<AlertResponse>> getAlertsByCityId(@PathVariable Long cityId, @RequestParam(name = "s", required = false) Boolean status) {
+        var response = this.alertService.getAlertsByCityId(cityId, status).stream().map(this.alertModelMapper::map).toList();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/alerts/provinces/{provinceId}/")
+    public ResponseEntity<List<AlertResponse>> getAlertsByProvinceId(@PathVariable Long provinceId, @RequestParam(name = "s", required = false) Boolean status) {
+        var response = this.alertService.getAlertsByProvinceId(provinceId, status).stream().map(this.alertModelMapper::map).toList();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/alert/{alertId}")
+    public ResponseEntity<AlertResponse> getAlertById(@PathVariable Long alertId) {
+        var response = this.alertModelMapper.map(this.alertService.getAlertById(alertId));
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/alert/active/{alertId}")
+    public ResponseEntity<String> activeAlert(@PathVariable Long alertId) {
+        String alert = this.alertService.activeAlert(alertId);
+        return ResponseEntity.ok(alert);
+    }
 }
