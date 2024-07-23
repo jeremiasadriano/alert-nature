@@ -22,7 +22,7 @@ public class AlertController {
     private final AlertModelMapper alertModelMapper;
 
 
-    @PostMapping("/createAlert/")
+    @PostMapping("/alert")
     public ResponseEntity<String> createAlert(@RequestBody AlertRequest alertRequest, @RequestParam Long cityId, @RequestParam Long provinceId) {
         var alert = this.modelMapper.map(alertRequest, Alert.class);
         String alertCreation = this.alertService.createAlert(alert, cityId, provinceId);
@@ -30,25 +30,19 @@ public class AlertController {
     }
 
     @GetMapping("/alerts")
-    public ResponseEntity<List<AlertResponse>> getAllAlerts() {
-        var response = this.alertService.getAllAlerts().stream().map(this.alertModelMapper::map).toList();
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/alerts/")
-    public ResponseEntity<List<AlertResponse>> getAllAlertsByStatus(@RequestParam(name = "s", required = false, defaultValue = "true") Boolean status) {
-        var response = this.alertService.getAllAlertsByStatus(status).stream().map(this.alertModelMapper::map).toList();
+    public ResponseEntity<List<AlertResponse>> getAllAlerts(@RequestParam(name = "s", required = false) Boolean status) {
+        var response = this.alertService.getAllAlerts(status).stream().map(this.alertModelMapper::map).toList();
         return ResponseEntity.ok(response);
 
     }
 
-    @GetMapping("/alerts/cities/{cityId}/")
+    @GetMapping("/alerts/cities/{cityId}")
     public ResponseEntity<List<AlertResponse>> getAlertsByCityId(@PathVariable Long cityId, @RequestParam(name = "s", required = false) Boolean status) {
         var response = this.alertService.getAlertsByCityId(cityId, status).stream().map(this.alertModelMapper::map).toList();
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/alerts/provinces/{provinceId}/")
+    @GetMapping("/alerts/provinces/{provinceId}")
     public ResponseEntity<List<AlertResponse>> getAlertsByProvinceId(@PathVariable Long provinceId, @RequestParam(name = "s", required = false) Boolean status) {
         var response = this.alertService.getAlertsByProvinceId(provinceId, status).stream().map(this.alertModelMapper::map).toList();
         return ResponseEntity.ok(response);
@@ -60,7 +54,7 @@ public class AlertController {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/alert/active/{alertId}")
+    @PatchMapping("/alert/{alertId}/active")
     public ResponseEntity<String> activeAlert(@PathVariable Long alertId) {
         String alert = this.alertService.activeAlert(alertId);
         return ResponseEntity.ok(alert);

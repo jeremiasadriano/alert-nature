@@ -7,9 +7,7 @@ import java.util.List;
 public interface AlertService {
     String createAlert(Alert alert, Long cityId, Long provinceId);
 
-    List<Alert> getAllAlerts();
-
-    List<Alert> getAllAlertsByStatus(Boolean status);
+    List<Alert> getAllAlerts(Boolean status);
 
     List<Alert> getAlertsByCityId(Long cityId, Boolean status);
 

@@ -41,12 +41,10 @@ public class AlertServiceImpl implements AlertService {
     }
 
     @Override
-    public List<Alert> getAllAlerts() {
-        return this.alertRepository.findAll();
-    }
-
-    @Override
-    public List<Alert> getAllAlertsByStatus(Boolean status) {
+    public List<Alert> getAllAlerts(Boolean status) {
+        if (status == null) {
+            return this.alertRepository.findAll();
+        }
         return this.alertRepository.findAllByStatus(status);
     }
 
