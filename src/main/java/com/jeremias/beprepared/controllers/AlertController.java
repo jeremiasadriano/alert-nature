@@ -15,46 +15,46 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/alerts")
 public class AlertController {
     private final ModelMapper modelMapper;
     private final AlertService alertService;
     private final AlertModelMapper alertModelMapper;
 
 
-    @PostMapping("/alerts")
+    @PostMapping
     public ResponseEntity<String> createAlert(@RequestBody AlertRequest alertRequest, @RequestParam Long cityId, @RequestParam Long provinceId) {
         var alert = this.modelMapper.map(alertRequest, Alert.class);
         String alertCreation = this.alertService.createAlert(alert, cityId, provinceId);
         return new ResponseEntity<>(alertCreation, HttpStatus.CREATED);
     }
 
-    @GetMapping("/alerts")
+    @GetMapping
     public ResponseEntity<List<AlertResponse>> getAllAlerts(@RequestParam(name = "s", required = false) Boolean status) {
         var response = this.alertService.getAllAlerts(status).stream().map(this.alertModelMapper::map).toList();
         return ResponseEntity.ok(response);
 
     }
 
-    @GetMapping("/alerts/cities/{cityId}")
+    @GetMapping("/cities/{cityId}")
     public ResponseEntity<List<AlertResponse>> getAlertsByCityId(@PathVariable Long cityId, @RequestParam(name = "s", required = false) Boolean status) {
         var response = this.alertService.getAlertsByCityId(cityId, status).stream().map(this.alertModelMapper::map).toList();
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/alerts/provinces/{provinceId}")
+    @GetMapping("/provinces/{provinceId}")
     public ResponseEntity<List<AlertResponse>> getAlertsByProvinceId(@PathVariable Long provinceId, @RequestParam(name = "s", required = false) Boolean status) {
         var response = this.alertService.getAlertsByProvinceId(provinceId, status).stream().map(this.alertModelMapper::map).toList();
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/alerts/{alertId}")
+    @GetMapping("/{alertId}")
     public ResponseEntity<AlertResponse> getAlertById(@PathVariable Long alertId) {
         var response = this.alertModelMapper.map(this.alertService.getAlertById(alertId));
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/alerts/{alertId}/active")
+    @PatchMapping("/{alertId}/active")
     public ResponseEntity<String> activeAlert(@PathVariable Long alertId) {
         String alert = this.alertService.activeAlert(alertId);
         return ResponseEntity.ok(alert);

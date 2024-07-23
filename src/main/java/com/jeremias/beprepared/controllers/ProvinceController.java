@@ -10,19 +10,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/provinces")
 @RequiredArgsConstructor
 public class ProvinceController {
     private final ProvinceService provinceService;
     private final ModelMapper mapper;
 
-    @GetMapping("/provinces")
+    @GetMapping
     public ResponseEntity<List<ProvinceResponse>> getAllProvinces() {
         var response = provinceService.getAllProvinces();
         return ResponseEntity.ok(response.stream().map((e) -> this.mapper.map(e, ProvinceResponse.class)).toList());
     }
 
-    @GetMapping("/provinces/{provinceId}")
+    @GetMapping("/{provinceId}")
     public ResponseEntity<ProvinceResponse> getProvinceById(@PathVariable Long provinceId) {
         return ResponseEntity.ok(this.mapper.map(provinceService.getProvinceById(provinceId), ProvinceResponse.class));
     }

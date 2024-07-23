@@ -13,25 +13,25 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/cities")
 @RequiredArgsConstructor
 public class CityController {
     private final CityService cityService;
     private final ModelMapper mapper;
 
-    @GetMapping("/cities")
+    @GetMapping
     public ResponseEntity<List<CityResponse>> getAllCities() {
         var response = cityService.getAllCities();
         return ResponseEntity.ok(response.stream().map((e) -> this.mapper.map(e, CityResponse.class)).toList());
     }
 
-    @GetMapping("/cities/{provincesId}")
+    @GetMapping("/{provincesId}")
     public ResponseEntity<List<CityResponse>> getCitiesByProvinceId(@PathVariable Long provincesId) {
         var response = cityService.getCitiesByProvinceId(provincesId);
         return ResponseEntity.ok(response.stream().map((e) -> this.mapper.map(e, CityResponse.class)).toList());
     }
 
-    @GetMapping("/cities/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CityResponse> getCityById(@PathVariable Long id) {
         return ResponseEntity.ok(this.mapper.map(cityService.getCityById(id), CityResponse.class));
     }
