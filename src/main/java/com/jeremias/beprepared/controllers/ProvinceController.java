@@ -22,7 +22,7 @@ public class ProvinceController {
         return ResponseEntity.ok(response.stream().map((e) -> this.mapper.map(e, ProvinceResponse.class)).toList());
     }
 
-    @GetMapping("/province/{provinceId}")
+    @GetMapping("/provinces/{provinceId}")
     public ResponseEntity<ProvinceResponse> getProvinceById(@PathVariable Long provinceId) {
         return ResponseEntity.ok(this.mapper.map(provinceService.getProvinceById(provinceId), ProvinceResponse.class));
     }

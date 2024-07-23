@@ -31,7 +31,7 @@ public class CityController {
         return ResponseEntity.ok(response.stream().map((e) -> this.mapper.map(e, CityResponse.class)).toList());
     }
 
-    @GetMapping("/city/{id}")
+    @GetMapping("/cities/{id}")
     public ResponseEntity<CityResponse> getCityById(@PathVariable Long id) {
         return ResponseEntity.ok(this.mapper.map(cityService.getCityById(id), CityResponse.class));
     }
