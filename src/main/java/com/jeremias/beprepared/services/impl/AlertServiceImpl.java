@@ -40,28 +40,29 @@ public class AlertServiceImpl implements AlertService {
         return "Alert created successfully";
     }
 
+    private List<Alert> findAllAlerts(Long cityId, Long provinceId, Boolean status) {
+        if (cityId != null) {
+            return (status == null) ? this.alertRepository.findAllByCityId(cityId) : this.alertRepository.findAllByCityIdAndStatus(cityId, status);
+        } else if (provinceId != null) {
+            return (status == null) ? this.alertRepository.findAllByProvinceId(provinceId) : this.alertRepository.findAllByProvinceIdAndStatus(provinceId, status);
+        } else {
+            return (status == null) ? this.alertRepository.findAll() : this.alertRepository.findAllByStatus(status);
+        }
+    }
+
     @Override
     public List<Alert> getAllAlerts(Boolean status) {
-        if (status == null) {
-            return this.alertRepository.findAll();
-        }
-        return this.alertRepository.findAllByStatus(status);
+        return findAllAlerts(null, null, status);
     }
 
     @Override
     public List<Alert> getAlertsByCityId(Long cityId, Boolean status) {
-        if (status == null) {
-            return this.alertRepository.findAllByCityId(cityId);
-        }
-        return this.alertRepository.findAllByCityIdAndStatus(cityId, status);
+        return findAllAlerts(cityId, null, status);
     }
 
     @Override
     public List<Alert> getAlertsByProvinceId(Long provinceId, Boolean status) {
-        if (status == null) {
-            return this.alertRepository.findAllByProvinceId(provinceId);
-        }
-        return this.alertRepository.findAllByProvinceIdAndStatus(provinceId, status);
+        return findAllAlerts(null, provinceId, status);
     }
 
     @Override
