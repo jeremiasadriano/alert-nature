@@ -17,4 +17,6 @@ public interface AlertRepository extends JpaRepository<Alert, Long> {
     List<Alert> findAllByProvinceId(Long provinceId);
 
     List<Alert> findAllByProvinceIdAndStatus(Long provinceId, Boolean status);
+
+    Long countAlertByStatus(Boolean status);
 }
