@@ -29,7 +29,26 @@ public class CitizensController {
 
     @GetMapping
     public ResponseEntity<List<CitizensResponse>> getAllCitizens() {
-        List<CitizensResponse> citizens = this.bePreparedMapper.map(this.citizensService.getAllCitizens());
-        return ResponseEntity.ok(citizens);
+        return ResponseEntity.ok(this.bePreparedMapper.mapCitizens(this.citizensService.getAllCitizens()));
+    }
+
+    @GetMapping("/cities/{cityId}")
+    public ResponseEntity<List<CitizensResponse>> getAllCitizensByCityId(@PathVariable Long cityId) {
+        return ResponseEntity.ok(this.bePreparedMapper.mapCitizens(this.citizensService.getAllCitizensByCityId(cityId)));
+    }
+
+    @GetMapping("/provinces/{provinceId}")
+    public ResponseEntity<List<CitizensResponse>> getAllCitizensByProvinceId(@PathVariable Long provinceId) {
+        return ResponseEntity.ok(this.bePreparedMapper.mapCitizens(this.citizensService.getAllCitizensByProvinceId(provinceId)));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CitizensResponse> getCitizenById(@PathVariable Long id) {
+        return ResponseEntity.ok(this.bePreparedMapper.mapCitizens(this.citizensService.getCitizenById(id)));
+    }
+
+    @PatchMapping("/verify")
+    public ResponseEntity<String> verifyAccount(@RequestParam String otp) {
+        return ResponseEntity.ok(this.citizensService.verifyAccount(otp));
     }
 }

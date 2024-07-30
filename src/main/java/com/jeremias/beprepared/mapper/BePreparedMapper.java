@@ -4,13 +4,18 @@ import com.jeremias.beprepared.dto.response.AlertResponse;
 import com.jeremias.beprepared.dto.response.CitizensResponse;
 import com.jeremias.beprepared.models.Alert;
 import com.jeremias.beprepared.models.Citizens;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class BePreparedMapper {
-    public AlertResponse map(Alert alert) {
+    private final ModelMapper mapper;
+
+    public AlertResponse mapAlert(Alert alert) {
         return AlertResponse.builder()
                 .id(alert.getId())
                 .title(alert.getTitle())
@@ -22,7 +27,11 @@ public class BePreparedMapper {
                 .build();
     }
 
-    public CitizensResponse map(Citizens citizens) {
+    public List<AlertResponse> mapAlert(List<Alert> alerts) {
+        return alerts.stream().map(this::mapAlert).toList();
+    }
+
+    public CitizensResponse mapCitizens(Citizens citizens) {
         return CitizensResponse.builder()
                 .id(citizens.getId())
                 .phone(citizens.getPhone())
@@ -33,7 +42,7 @@ public class BePreparedMapper {
                 .build();
     }
 
-    public List<CitizensResponse> map(List<Citizens> citizens) {
-        return citizens.stream().map(this::map).toList();
+    public List<CitizensResponse> mapCitizens(List<Citizens> citizens) {
+        return citizens.stream().map(this::mapCitizens).toList();
     }
 }
