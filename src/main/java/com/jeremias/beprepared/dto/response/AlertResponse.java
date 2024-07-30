@@ -1,11 +1,11 @@
 package com.jeremias.beprepared.dto.response;
 
 import com.jeremias.beprepared.models.enums.Severity;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
+@Builder
 public class AlertResponse {
     private Long id;
     private String title;

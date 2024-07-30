@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Table(name = "Citizens")
@@ -17,11 +19,20 @@ public class Citizens {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Citizens_gen")
     private Long id;
+    @Column(unique = true)
     private String phone;
     private String deviceId;
+    @Column(length = 6)
+    private String otp;
+    private LocalDateTime otpDuration;
     private boolean verified;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
+
+    @PrePersist
+    private void optDurationTime() {
+        this.setOtpDuration(LocalDateTime.now().plusMinutes(10L));
+    }
 }

@@ -1,7 +1,7 @@
 package com.jeremias.beprepared.services.impl;
 
 import com.jeremias.beprepared.dto.response.UserStatsResponse;
-import com.jeremias.beprepared.exceptions.handlers.EntityAlreadyExistException;
+import com.jeremias.beprepared.exceptions.handlers.EntityConflictException;
 import com.jeremias.beprepared.exceptions.handlers.EntityNotFoundException;
 import com.jeremias.beprepared.models.User;
 import com.jeremias.beprepared.repositories.AlertRepository;
@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public String createUser(User user) {
         if (userRepository.existsByEmail(user.getEmail()))
-            throw new EntityAlreadyExistException("User Already exist with such email!");
+            throw new EntityConflictException("User Already exist with such email!");
         this.userRepository.save(user);
         return "";
     }

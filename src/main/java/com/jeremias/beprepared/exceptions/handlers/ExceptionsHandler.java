@@ -16,14 +16,14 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionsModel, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(EntityNotNullException.class)
-    public ResponseEntity<ExceptionsModel> EntityNotNullException(EntityNotNullException notNullException) {
+    @ExceptionHandler(EntityBadRequestException.class)
+    public ResponseEntity<ExceptionsModel> EntityNotNullException(EntityBadRequestException notNullException) {
         var exceptionsModel = new ExceptionsModel(HttpStatus.BAD_REQUEST, notNullException.getMessage());
         return new ResponseEntity<>(exceptionsModel, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(EntityAlreadyExistException.class)
-    public ResponseEntity<ExceptionsModel> EntityAlreadyExistException(EntityAlreadyExistException existException) {
+    @ExceptionHandler(EntityConflictException.class)
+    public ResponseEntity<ExceptionsModel> EntityAlreadyExistException(EntityConflictException existException) {
         var exceptionsModel = new ExceptionsModel(HttpStatus.CONFLICT, existException.getMessage());
         return new ResponseEntity<>(exceptionsModel, HttpStatus.CONFLICT);
     }
