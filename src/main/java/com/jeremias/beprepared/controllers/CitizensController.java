@@ -18,12 +18,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CitizensController {
     private final CitizensService citizensService;
-    private final ModelMapper modelMapper;
     private final BePreparedMapper bePreparedMapper;
 
     @PostMapping("/{cityId}")
     public ResponseEntity<String> createCitizens(@RequestBody CitizensRequest citizensRequest, @PathVariable("cityId") Long cityId) {
-        Citizens citizens = this.modelMapper.map(citizensRequest, Citizens.class);
+        Citizens citizens = this.bePreparedMapper.mapCitizens(citizensRequest);
         return new ResponseEntity<>(this.citizensService.createCitizens(citizens, cityId), HttpStatus.CREATED);
     }
 
