@@ -3,7 +3,6 @@ package com.jeremias.beprepared.services.impl;
 import com.jeremias.beprepared.exceptions.handlers.EntityBadRequestException;
 import com.jeremias.beprepared.exceptions.handlers.EntityNotFoundException;
 import com.jeremias.beprepared.models.Citizens;
-import com.jeremias.beprepared.models.City;
 import com.jeremias.beprepared.repositories.CitizensRepository;
 import com.jeremias.beprepared.services.CitizensService;
 import com.jeremias.beprepared.services.CityService;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -51,12 +49,7 @@ public class CitizensServiceImpl implements CitizensService {
 
     @Override
     public List<Citizens> getAllCitizensByProvinceId(Long provinceId) {
-        List<City> cities = this.cityService.getCitiesByProvinceId(provinceId);
-        List<List<Citizens>> citizens = new ArrayList<>();
-        for (City city : cities) {
-            citizens.add(this.getAllCitizensByCityId(city.getId()));
-        }
-        return citizens.stream().map((e) -> e.iterator().next()).toList();
+        return this.citizensRepository.findAllByCityProvinceId(provinceId);
     }
 
     @Override
@@ -68,18 +61,24 @@ public class CitizensServiceImpl implements CitizensService {
     @Transactional
     public String verifyAccount(String otp) {
         Citizens citizens = this.citizensRepository.findByOtp(otp).orElseThrow(() -> new EntityNotFoundException("Citizens not found!"));
-        try {
-            if (citizens.getOtpDuration().isBefore(LocalDateTime.now())) {
-                throw new EntityBadRequestException("Otp is invalid");
-            }
-            citizens.setOtp(null);
-            citizens.setVerified(true);
-            this.citizensRepository.save(citizens);
-            return "Citizen verified!";
-        } catch (Exception e) {
-            log.error("Error verifying account: \t", e);
+        if (citizens.getOtpDuration().isBefore(LocalDateTime.now())) {
+            log.error("Error, opt is invalid");
+            throw new EntityBadRequestException("Otp is invalid Your can renew using: http://localhost:8080/api/v1/citizens/otp/renew?device=".concat(citizens.getDeviceId()));
         }
-        return "";
+        citizens.setOtp(null);
+        citizens.setVerified(true);
+        this.citizensRepository.save(citizens);
+        return "Citizen verified!";
+    }
+
+    @Override
+    @Transactional
+    public String renewOtp(String deviceId) {
+        Citizens citizens = this.citizensRepository.findByDeviceId(deviceId).orElseThrow(() -> new EntityNotFoundException("Citizens not found!"));
+        citizens.setOtp(optGenerator(6));
+        citizens.setOtpDuration(LocalDateTime.now().plusMinutes(10L));
+        Citizens citizen = this.citizensRepository.save(citizens);
+        return "Your new Otp is: " + citizen.getOtp();
     }
 
     @NonNull

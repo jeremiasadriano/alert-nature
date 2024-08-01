@@ -6,7 +6,6 @@ import com.jeremias.beprepared.mapper.BePreparedMapper;
 import com.jeremias.beprepared.models.Citizens;
 import com.jeremias.beprepared.services.CitizensService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,5 +48,10 @@ public class CitizensController {
     @PatchMapping("/verify")
     public ResponseEntity<String> verifyAccount(@RequestParam String otp) {
         return ResponseEntity.ok(this.citizensService.verifyAccount(otp));
+    }
+
+    @PatchMapping("/otp/renew")
+    public ResponseEntity<String> renewOtp(@RequestParam(name = "device") String deviceId) {
+        return new ResponseEntity<>(this.citizensService.renewOtp(deviceId), HttpStatus.ACCEPTED);
     }
 }

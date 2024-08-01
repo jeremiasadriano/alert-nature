@@ -11,6 +11,9 @@ import java.util.Optional;
 public interface CitizensRepository extends JpaRepository<Citizens, Long> {
     List<Citizens> findAllByCityId(Long cityId);
 
-    //    List<Citizens> findAllByProvinceId(Long provinceId);
     Optional<Citizens> findByOtp(String otp);
+
+    Optional<Citizens> findByDeviceId(String deviceId);
+
+    List<Citizens> findAllByCityProvinceId(Long provinceId);
 }

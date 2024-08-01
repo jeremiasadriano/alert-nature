@@ -16,4 +16,6 @@ public interface CitizensService {
     Citizens getCitizenById(Long id);
 
     String verifyAccount(String otp);
+
+    String renewOtp(String deviceId);
 }
