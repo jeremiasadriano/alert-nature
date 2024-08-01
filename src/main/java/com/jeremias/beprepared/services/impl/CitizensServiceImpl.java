@@ -32,7 +32,7 @@ public class CitizensServiceImpl implements CitizensService {
         var city = this.cityService.getCityById(cityId);
         citizens.setCity(city);
         citizens.setVerified(false);
-        citizens.setOtp(optGenerator(6));
+        citizens.setOtp(optGenerator());
         Citizens citizen = this.citizensRepository.save(citizens);
         return "Citizen created successful, Your OTP is: " + citizen.getOtp();
     }
@@ -75,16 +75,16 @@ public class CitizensServiceImpl implements CitizensService {
     @Transactional
     public String renewOtp(String deviceId) {
         Citizens citizens = this.citizensRepository.findByDeviceId(deviceId).orElseThrow(() -> new EntityNotFoundException("Citizens not found!"));
-        citizens.setOtp(optGenerator(6));
+        citizens.setOtp(optGenerator());
         citizens.setOtpDuration(LocalDateTime.now().plusMinutes(10L));
         Citizens citizen = this.citizensRepository.save(citizens);
         return "Your new Otp is: " + citizen.getOtp();
     }
 
     @NonNull
-    private static String optGenerator(int length) {
-        char[] chars = new char[length];
-        for (int i = 0; i < length; i++) {
+    private static String optGenerator() {
+        char[] chars = new char[6];
+        for (int i = 0; i < chars.length; i++) {
             int randomNumbers = new Random().nextInt(9);
             chars[i] = Integer.toString(randomNumbers).toCharArray()[0];
         }
