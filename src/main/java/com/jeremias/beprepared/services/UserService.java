@@ -9,4 +9,6 @@ public interface UserService {
     User getUserById(Long id);
 
     UserStatsResponse getAllStats(Boolean status);
+
+    String updateUser(User user, Long userId);
 }

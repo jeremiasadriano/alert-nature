@@ -1,6 +1,7 @@
 package com.jeremias.beprepared.services.impl;
 
 import com.jeremias.beprepared.dto.response.UserStatsResponse;
+import com.jeremias.beprepared.exceptions.handlers.EntityBadRequestException;
 import com.jeremias.beprepared.exceptions.handlers.EntityConflictException;
 import com.jeremias.beprepared.exceptions.handlers.EntityNotFoundException;
 import com.jeremias.beprepared.models.User;
@@ -11,6 +12,8 @@ import com.jeremias.beprepared.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -42,5 +45,17 @@ public class UserServiceImpl implements UserService {
                 .totalAlerts(this.alertRepository.count())
                 .activeAlerts(this.alertRepository.countAlertByStatus(status))
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public String updateUser(User user, Long userId) {
+        User userData = this.getUserById(userId);
+        if (Objects.isNull(userData)) throw new EntityBadRequestException("The user cannot be null!");
+        if (user.getName() != null) userData.setName(user.getName());
+        if (user.getEmail() != null) userData.setEmail(user.getEmail());
+        if (user.getPassword() != null) userData.setPassword(user.getPassword());
+        this.userRepository.save(userData);
+        return "User Updated!";
     }
 }

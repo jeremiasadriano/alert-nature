@@ -5,6 +5,7 @@ import com.jeremias.beprepared.dto.response.UserResponse;
 import com.jeremias.beprepared.dto.response.UserStatsResponse;
 import com.jeremias.beprepared.models.User;
 import com.jeremias.beprepared.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<String> createUser(@RequestBody @Valid UserRequest userRequest) {
         return new ResponseEntity<>(userService.createUser(modelMapper.map(userRequest, User.class)), HttpStatus.CREATED);
     }
 
@@ -31,6 +32,11 @@ public class UserController {
     @GetMapping("/metrics")
     public ResponseEntity<UserStatsResponse> getAllStats(@RequestParam(defaultValue = "true", name = "s") Boolean status) {
         return ResponseEntity.ok(userService.getAllStats(status));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateUser(@RequestBody @Valid UserRequest userRequest, @PathVariable("id") Long userId) {
+        return ResponseEntity.ok(userService.updateUser(modelMapper.map(userRequest, User.class), userId));
     }
 }
 

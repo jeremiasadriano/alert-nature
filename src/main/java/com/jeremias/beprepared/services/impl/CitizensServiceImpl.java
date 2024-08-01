@@ -60,10 +60,10 @@ public class CitizensServiceImpl implements CitizensService {
     @Override
     @Transactional
     public String verifyAccount(String otp) {
-        Citizens citizens = this.citizensRepository.findByOtp(otp).orElseThrow(() -> new EntityNotFoundException("Citizens not found!"));
+        Citizens citizens = this.citizensRepository.findByOtp(otp).orElseThrow(() -> new EntityNotFoundException("Error, opt is invalid!"));
         if (citizens.getOtpDuration().isBefore(LocalDateTime.now())) {
-            log.error("Error, opt is invalid");
-            throw new EntityBadRequestException("Otp is invalid Your can renew using: http://localhost:8080/api/v1/citizens/otp/renew?device=".concat(citizens.getDeviceId()));
+            log.error("Error, opt has expired!");
+            throw new EntityBadRequestException("Your Otp has expired, you can renew using: http://localhost:8080/api/v1/citizens/otp/renew?device=".concat(citizens.getDeviceId()));
         }
         citizens.setOtp(null);
         citizens.setVerified(true);
@@ -75,6 +75,7 @@ public class CitizensServiceImpl implements CitizensService {
     @Transactional
     public String renewOtp(String deviceId) {
         Citizens citizens = this.citizensRepository.findByDeviceId(deviceId).orElseThrow(() -> new EntityNotFoundException("Citizens not found!"));
+        if (citizens.getOtp() == null) throw new EntityBadRequestException("The Citizens is already activated");
         citizens.setOtp(optGenerator());
         citizens.setOtpDuration(LocalDateTime.now().plusMinutes(10L));
         Citizens citizen = this.citizensRepository.save(citizens);
