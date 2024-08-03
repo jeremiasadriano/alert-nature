@@ -2,6 +2,7 @@ package com.jeremias.beprepared.dto.request;
 
 import com.jeremias.beprepared.models.enums.Severity;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -10,6 +11,6 @@ public class AlertRequest {
     private String title;
     @NotBlank
     private String message;
-    @NotBlank
+    @NotNull
     private Severity severity;
 }

@@ -5,6 +5,7 @@ import com.jeremias.beprepared.dto.response.AlertResponse;
 import com.jeremias.beprepared.mapper.BePreparedMapper;
 import com.jeremias.beprepared.models.Alert;
 import com.jeremias.beprepared.services.AlertService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class AlertController {
 
 
     @PostMapping
-    public ResponseEntity<String> createAlert(@RequestBody AlertRequest alertRequest, @RequestParam Long cityId, @RequestParam Long provinceId) {
+    public ResponseEntity<String> createAlert(@Valid @RequestBody AlertRequest alertRequest, @RequestParam Long cityId, @RequestParam Long provinceId) {
         var alert = this.modelMapper.map(alertRequest, Alert.class);
         String alertCreation = this.alertService.createAlert(alert, cityId, provinceId);
         return new ResponseEntity<>(alertCreation, HttpStatus.CREATED);

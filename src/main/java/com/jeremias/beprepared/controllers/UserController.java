@@ -20,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody @Valid UserRequest userRequest) {
+    public ResponseEntity<String> createUser(@Valid @RequestBody UserRequest userRequest) {
         return new ResponseEntity<>(userService.createUser(modelMapper.map(userRequest, User.class)), HttpStatus.CREATED);
     }
 
@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUser(@RequestBody @Valid UserRequest userRequest, @PathVariable("id") Long userId) {
+    public ResponseEntity<String> updateUser(@Valid @RequestBody UserRequest userRequest, @PathVariable("id") Long userId) {
         return ResponseEntity.ok(userService.updateUser(modelMapper.map(userRequest, User.class), userId));
     }
 }

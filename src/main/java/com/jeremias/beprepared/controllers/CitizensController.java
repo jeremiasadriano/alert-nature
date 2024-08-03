@@ -5,6 +5,7 @@ import com.jeremias.beprepared.dto.response.CitizensResponse;
 import com.jeremias.beprepared.mapper.BePreparedMapper;
 import com.jeremias.beprepared.models.Citizens;
 import com.jeremias.beprepared.services.CitizensService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class CitizensController {
     private final BePreparedMapper bePreparedMapper;
 
     @PostMapping("/{cityId}")
-    public ResponseEntity<String> createCitizens(@RequestBody CitizensRequest citizensRequest, @PathVariable("cityId") Long cityId) {
+    public ResponseEntity<String> createCitizens(@Valid @RequestBody CitizensRequest citizensRequest, @PathVariable("cityId") Long cityId) {
         Citizens citizens = this.bePreparedMapper.mapCitizens(citizensRequest);
         return new ResponseEntity<>(this.citizensService.createCitizens(citizens, cityId), HttpStatus.CREATED);
     }
