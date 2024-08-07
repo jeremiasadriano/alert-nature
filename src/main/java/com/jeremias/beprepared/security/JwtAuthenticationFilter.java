@@ -1,6 +1,5 @@
 package com.jeremias.beprepared.security;
 
-import com.jeremias.beprepared.exceptions.handlers.EntityBadRequestException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,25 +24,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (extractToken(request).isEmpty()) {
+        Optional<String> tokenOptional = extractToken(request);
+        if (tokenOptional.isEmpty()) {
             filterChain.doFilter(request, response);
-            throw new EntityBadRequestException("The token cannot be null");
+            return;
         }
-        String token = extractToken(request).get();
-        String username = this.jwtService.getUsername(token);
-        if (this.jwtService.isValid(token, username)) {
+
+        final String token = tokenOptional.get();
+        final String username = jwtService.getUsername(token);
+
+        if (StringUtils.hasText(username) && SecurityContextHolder.getContext().getAuthentication() == null && jwtService.isValid(token, username)) {
             UserDetails userDetails = authDetailsServiceImpls.loadUserByUsername(username);
             var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
+
+        filterChain.doFilter(request, response);
     }
 
     private Optional<String> extractToken(HttpServletRequest request) {
-        String tokenPrefix = "Bearer ";
-        String token = request.getHeader("Authorization");
+        final String tokenPrefix = "Bearer ";
+        final String token = request.getHeader("Authorization");
         if (StringUtils.hasText(token) && token.startsWith(tokenPrefix)) {
-            return Optional.of(token.replace(tokenPrefix, ""));
+            return Optional.of(token.substring(tokenPrefix.length()));
         }
         return Optional.empty();
     }
