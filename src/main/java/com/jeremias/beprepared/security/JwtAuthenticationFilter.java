@@ -19,7 +19,7 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final AuthDetailsServiceImpls authDetailsServiceImpls;
+    private final UserDetailsServiceImpls userDetailsServiceImpls;
     private final JwtService jwtService;
 
     @Override
@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String username = jwtService.getUsername(token);
 
         if (StringUtils.hasText(username) && SecurityContextHolder.getContext().getAuthentication() == null && jwtService.isValid(token, username)) {
-            UserDetails userDetails = authDetailsServiceImpls.loadUserByUsername(username);
+            UserDetails userDetails = userDetailsServiceImpls.loadUserByUsername(username);
             var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(auth);
