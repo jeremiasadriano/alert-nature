@@ -10,6 +10,10 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+app:
+  secret:
+    key: ${APP.SECRET.KEY}
+    expiration-time: ${APP.SECRET.EXPIRATION}
 logging:
   file:
     name: bePrepared.log

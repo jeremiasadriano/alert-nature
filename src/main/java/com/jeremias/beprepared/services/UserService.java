@@ -11,4 +11,6 @@ public interface UserService {
     UserStatsResponse getAllStats(Boolean status);
 
     String updateUser(User user, Long userId);
+
+    User getUserByEmail(String email);
 }

@@ -17,7 +17,6 @@ public class StandardErrorResponse {
     private String title;
     private HttpStatus status;
     private OffsetDateTime timestamp;
-    private String path;
     private List<ValidationError> fields;
 
     @Data

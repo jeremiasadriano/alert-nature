@@ -58,4 +58,9 @@ public class UserServiceImpl implements UserService {
         this.userRepository.save(userData);
         return "User Updated!";
     }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return this.userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found!"));
+    }
 }

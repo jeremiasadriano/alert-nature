@@ -33,7 +33,6 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         response.setTitle(notFound.getMessage());
         response.setCode(httpStatus.value());
         response.setStatus(httpStatus);
-        response.setPath(request.getContextPath());
         response.setTimestamp(OffsetDateTime.now());
         return ResponseEntity.status(httpStatus).body(response);
     }
@@ -44,7 +43,6 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         response.setTitle(notNullException.getMessage());
         response.setCode(httpStatus.value());
         response.setStatus(httpStatus);
-        response.setPath(request.getContextPath());
         response.setTimestamp(OffsetDateTime.now());
         return ResponseEntity.status(httpStatus).body(response);
     }
@@ -55,7 +53,6 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         response.setTitle(existException.getMessage());
         response.setCode(httpStatus.value());
         response.setStatus(httpStatus);
-        response.setPath(request.getContextPath());
         response.setTimestamp(OffsetDateTime.now());
         return ResponseEntity.status(httpStatus).body(response);
     }
@@ -73,7 +70,6 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         response.setTitle("ERROR VALIDATING SOME FIELDS!");
         response.setCode(httpStatus.value());
         response.setStatus(httpStatus);
-        response.setPath(request.getContextPath());
         response.setFields(validationErrors);
         response.setTimestamp(OffsetDateTime.now());
 

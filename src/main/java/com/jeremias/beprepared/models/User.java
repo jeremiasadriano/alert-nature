@@ -1,5 +1,6 @@
 package com.jeremias.beprepared.models;
 
+import com.jeremias.beprepared.models.enums.Roles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,4 +24,7 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Roles roles;
 }
