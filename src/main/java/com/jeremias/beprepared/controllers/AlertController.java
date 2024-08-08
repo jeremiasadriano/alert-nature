@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,10 @@ public class AlertController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+//    @Secured("ROLE_ADMIN") //DIDN'T
+//    @RolesAllowed("ROLE_ADMIN") //DIDN'T
+//    @PostAuthorize("hasRole('ADMIN')") //WORKED
     public ResponseEntity<List<AlertResponse>> getAllAlerts(@RequestParam(name = "s", required = false) Boolean status) {
         var response = this.bePreparedMapper.mapAlert(this.alertService.getAllAlerts(status));
         return ResponseEntity.ok(response);
@@ -56,6 +61,7 @@ public class AlertController {
     }
 
     @PatchMapping("/{alertId}/active")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> activeAlert(@PathVariable Long alertId) {
         String alert = this.alertService.activeAlert(alertId);
         return ResponseEntity.ok(alert);

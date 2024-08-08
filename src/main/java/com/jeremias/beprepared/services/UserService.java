@@ -4,7 +4,7 @@ import com.jeremias.beprepared.dto.response.UserStatsResponse;
 import com.jeremias.beprepared.models.User;
 
 public interface UserService {
-    String createUser(User user);
+    void createUser(User user);
 
     User getUserById(Long id);
 

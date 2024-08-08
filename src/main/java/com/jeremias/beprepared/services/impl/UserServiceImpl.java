@@ -25,11 +25,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public String createUser(User user) {
+    public void createUser(User user) {
         if (userRepository.existsByEmail(user.getEmail()))
             throw new EntityConflictException("User Already exist with such email!");
         this.userRepository.save(user);
-        return "";
     }
 
     @Override

@@ -8,7 +8,6 @@ import com.jeremias.beprepared.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final ModelMapper modelMapper;
     private final UserService userService;
-
-    @PostMapping
-    public ResponseEntity<String> createUser(@Valid @RequestBody UserRequest userRequest) {
-        return new ResponseEntity<>(userService.createUser(modelMapper.map(userRequest, User.class)), HttpStatus.CREATED);
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {

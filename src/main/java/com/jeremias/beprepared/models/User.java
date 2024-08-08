@@ -2,16 +2,14 @@ package com.jeremias.beprepared.models;
 
 import com.jeremias.beprepared.models.enums.Roles;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Table(name = "Usuarios")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @SequenceGenerator(sequenceName = "usuarios_seq", name = "usuarios_gen", allocationSize = 1, initialValue = 1)
 @Entity
 public class User {
@@ -24,7 +22,6 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Roles roles;
 }
