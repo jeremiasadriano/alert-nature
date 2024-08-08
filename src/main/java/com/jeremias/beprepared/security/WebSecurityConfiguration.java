@@ -21,16 +21,24 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfiguration {
     private final UserDetailsServiceImpls userDetailsServiceImpls;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final String[] ALLOWED_URLS = {"/login/**", "/register/**"};
+    private final String[] AUTH_URIS = {"api/v1/auth/**"};
+    private final String[] ALLOWED_URIS = {
+            "api/v1/citizens/",
+            "api/v1/citizens/verify",
+            "api/v1/citizens/otp/renew"
+    };
+    private final String[] ADMIN_URIS = {
+            "api/v1/users/**"
+    };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request.
-                        requestMatchers(HttpMethod.POST, ALLOWED_URLS)
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated()
+                        requestMatchers(HttpMethod.POST, AUTH_URIS).permitAll()
+                        .requestMatchers(ALLOWED_URIS).permitAll()
+                        .requestMatchers(ADMIN_URIS).hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .userDetailsService(userDetailsServiceImpls)

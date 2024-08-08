@@ -1,14 +1,21 @@
 package com.jeremias.beprepared.configs;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
     private final String CORS_MAPPING = "/**";
     private final String[] CORS_ORIGEN = {"*"};
-    private final String[] CORS_METHOD = {"*"};
+    private final String[] CORS_METHOD = {"GET", "POST", "PUT", "PATCH", "DELETE"};
     private final String[] CORS_HEADERS = {"*"};
 
     @Override
@@ -17,5 +24,16 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedOrigins(CORS_ORIGEN)
                 .allowedMethods(CORS_METHOD)
                 .allowedHeaders(CORS_HEADERS);
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of(CORS_ORIGEN));
+        configuration.setAllowedMethods(Arrays.asList(CORS_METHOD));
+        configuration.setAllowedHeaders(Arrays.asList(CORS_HEADERS));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration(CORS_MAPPING, configuration);
+        return source;
     }
 }
