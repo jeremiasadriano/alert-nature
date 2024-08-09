@@ -30,10 +30,14 @@ public class WebSecurityConfiguration {
             "/api/v1/citizens/",
             "/api/v1/citizens/verify",
             "/api/v1/citizens/otp/renew",
-            "/api/v1/users/"
     };
     private final String[] ADMIN_URIS = {
-            "/api/v1/users/**"
+            "/api/v1/users/metrics",
+            "/api/v1/users/"
+    };
+
+    private final String[] USER_URIS = {
+            "/api/v1/users/profile"
     };
 
     @Bean
@@ -44,6 +48,7 @@ public class WebSecurityConfiguration {
                         requestMatchers(HttpMethod.POST, AUTH_URIS).permitAll()
                         .requestMatchers(ALLOWED_URIS).permitAll()
                         .requestMatchers(ADMIN_URIS).hasRole("ADMIN")
+                        .requestMatchers(USER_URIS).hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -5,11 +5,16 @@ import com.jeremias.beprepared.exceptions.handlers.EntityBadRequestException;
 import com.jeremias.beprepared.exceptions.handlers.EntityConflictException;
 import com.jeremias.beprepared.exceptions.handlers.EntityNotFoundException;
 import com.jeremias.beprepared.models.User;
+import com.jeremias.beprepared.models.UserDetailsImpl;
 import com.jeremias.beprepared.repositories.AlertRepository;
 import com.jeremias.beprepared.repositories.CitizensRepository;
 import com.jeremias.beprepared.repositories.UserRepository;
 import com.jeremias.beprepared.services.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +24,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
     private final CitizensRepository citizensRepository;
     private final AlertRepository alertRepository;
@@ -29,6 +35,11 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(user.getEmail()))
             throw new EntityConflictException("User Already exist with such email!");
         this.userRepository.save(user);
+    }
+
+    @Override
+    public User getPrincipal(UserDetailsImpl userDetails) {
+        return this.userRepository.findByEmail(userDetails.getUsername()).orElseThrow(() -> new EntityNotFoundException("User not found!"));
     }
 
     @Override

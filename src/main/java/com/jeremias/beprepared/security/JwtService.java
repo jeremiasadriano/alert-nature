@@ -55,10 +55,6 @@ public class JwtService {
         return getClaims(token).getSubject();
     }
 
-    public Object getCustomClaims(String token, String customClaim) {
-        return getClaims(token).get(customClaim, Object.class);
-    }
-
     public boolean isValid(String token, String username) {
         return (getUsername(token).equals(username) && !isExpired(token));
     }

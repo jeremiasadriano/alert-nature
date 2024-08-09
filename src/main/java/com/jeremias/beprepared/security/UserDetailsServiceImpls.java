@@ -1,7 +1,7 @@
 package com.jeremias.beprepared.security;
 
 import com.jeremias.beprepared.exceptions.handlers.EntityNotFoundException;
-import com.jeremias.beprepared.models.AuthDetailsImpl;
+import com.jeremias.beprepared.models.UserDetailsImpl;
 import com.jeremias.beprepared.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +17,7 @@ public class UserDetailsServiceImpls implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
-                .map(AuthDetailsImpl::new)
+                .map(UserDetailsImpl::new)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with such email"));
     }
 }
