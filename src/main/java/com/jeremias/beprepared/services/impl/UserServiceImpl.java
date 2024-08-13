@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getPrincipal(UserDetailsImpl userDetails) {
+        if (Objects.isNull(userDetails)) throw new EntityNotFoundException("User not found!");
         return this.userRepository.findByEmail(userDetails.getUsername()).orElseThrow(() -> new EntityNotFoundException("User not found!"));
     }
 
