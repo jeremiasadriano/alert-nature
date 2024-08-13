@@ -5,6 +5,7 @@ import com.jeremias.beprepared.dto.response.CitizensResponse;
 import com.jeremias.beprepared.mapper.BePreparedMapper;
 import com.jeremias.beprepared.models.Citizens;
 import com.jeremias.beprepared.services.CitizensService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/citizens")
 @RequiredArgsConstructor
+@Tag(name = "4. Citizens Controller")
 public class CitizensController {
     private final CitizensService citizensService;
     private final BePreparedMapper bePreparedMapper;

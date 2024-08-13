@@ -28,12 +28,13 @@ public class WebSecurityConfiguration {
     private final String[] AUTH_URIS = {"/api/v1/auth/**"};
     private final String[] ALLOWED_URIS = {
             "/api/v1/citizens/",
+            "api/v1/locations/**",
             "/api/v1/citizens/verify",
             "/api/v1/citizens/otp/renew",
+            "/api/v1/users/**"
     };
     private final String[] ADMIN_URIS = {
             "/api/v1/users/metrics",
-            "/api/v1/users/"
     };
 
     private final String[] USER_URIS = {
@@ -45,7 +46,8 @@ public class WebSecurityConfiguration {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(request -> request.
-                        requestMatchers(HttpMethod.POST, AUTH_URIS).permitAll()
+                        requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, AUTH_URIS).permitAll()
                         .requestMatchers(ALLOWED_URIS).permitAll()
                         .requestMatchers(ADMIN_URIS).hasRole("ADMIN")
                         .requestMatchers(USER_URIS).hasRole("USER")

@@ -2,6 +2,7 @@ package com.jeremias.beprepared.controllers;
 
 import com.jeremias.beprepared.dto.response.CityResponse;
 import com.jeremias.beprepared.services.CityService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/cities")
 @RequiredArgsConstructor
+@Tag(name = "6. City Controller")
 public class CityController {
     private final CityService cityService;
     private final ModelMapper mapper;

@@ -13,7 +13,7 @@ public interface UserService {
 
     UserStatsResponse getAllStats(Boolean status);
 
-    String updateUser(User user, Long userId);
+    String updateUser(User user, UserDetailsImpl username);
 
     User getUserByEmail(String email);
 }

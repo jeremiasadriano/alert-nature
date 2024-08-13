@@ -17,3 +17,7 @@ app:
 logging:
   file:
     name: bePrepared.log
+springdoc:
+  swagger-ui:
+    tagsSorter: alpha
+    operationsSorter: method

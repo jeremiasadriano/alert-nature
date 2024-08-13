@@ -11,10 +11,8 @@ import com.jeremias.beprepared.repositories.CitizensRepository;
 import com.jeremias.beprepared.repositories.UserRepository;
 import com.jeremias.beprepared.services.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,8 +57,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public String updateUser(User user, Long userId) {
-        User userData = this.getUserById(userId);
+    public String updateUser(User user, UserDetailsImpl username) {
+        User userData = this.getPrincipal(username);
         if (Objects.isNull(userData)) throw new EntityBadRequestException("The user cannot be null!");
         if (user.getName() != null) userData.setName(user.getName());
         if (user.getEmail() != null) userData.setEmail(user.getEmail());
