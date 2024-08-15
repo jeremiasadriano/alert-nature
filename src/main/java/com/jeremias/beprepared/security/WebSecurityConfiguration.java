@@ -3,7 +3,6 @@ package com.jeremias.beprepared.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -47,7 +46,7 @@ public class WebSecurityConfiguration {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .authorizeHttpRequests(request -> request.
                         requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, AUTH_URIS).permitAll()
+                        .requestMatchers(AUTH_URIS).permitAll()
                         .requestMatchers(ALLOWED_URIS).permitAll()
                         .requestMatchers(ADMIN_URIS).hasRole("ADMIN")
                         .requestMatchers(USER_URIS).hasRole("USER")

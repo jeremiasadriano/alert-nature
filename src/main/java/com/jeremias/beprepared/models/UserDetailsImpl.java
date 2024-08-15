@@ -35,6 +35,6 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.user.isAccountStatus();
+        return this.user.isActive();
     }
 }

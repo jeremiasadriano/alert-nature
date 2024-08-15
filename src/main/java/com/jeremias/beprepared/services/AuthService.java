@@ -7,5 +7,9 @@ import com.jeremias.beprepared.models.User;
 public interface AuthService {
     AuthResponse login(AuthRequest authRequest);
 
-    AuthResponse register(User user);
+    String register(User user);
+
+    String activeUser(String token);
+
+    String reactivationToken(String token);
 }

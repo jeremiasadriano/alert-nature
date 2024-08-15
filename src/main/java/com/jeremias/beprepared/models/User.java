@@ -25,5 +25,5 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Roles roles;
     @Column(name = "status")
-    private boolean accountStatus = false;
+    private boolean active = false;
 }

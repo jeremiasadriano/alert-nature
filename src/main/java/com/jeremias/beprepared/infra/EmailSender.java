@@ -27,10 +27,10 @@ public class EmailSender {
     public void send(String subject, String to, String message, String attachment) {
         try {
             MimeMessage mailMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mailMessage, senderName);
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mailMessage);
             mimeMessageHelper.setSubject(subject);
+            mimeMessageHelper.setFrom(from, senderName);
             mimeMessageHelper.setTo(to);
-            mimeMessageHelper.setFrom(from);
             mimeMessageHelper.setText(message);
             if (!attachment.isEmpty()) {
                 FileSystemResource fileResource = new FileSystemResource(new File(attachment));

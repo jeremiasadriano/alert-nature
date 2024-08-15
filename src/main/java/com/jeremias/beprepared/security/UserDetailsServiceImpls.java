@@ -1,5 +1,6 @@
 package com.jeremias.beprepared.security;
 
+import com.jeremias.beprepared.exceptions.handlers.EntityBadRequestException;
 import com.jeremias.beprepared.exceptions.handlers.EntityNotFoundException;
 import com.jeremias.beprepared.models.UserDetailsImpl;
 import com.jeremias.beprepared.repositories.UserRepository;
@@ -16,8 +17,10 @@ public class UserDetailsServiceImpls implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username)
+        var userDetails = userRepository.findByEmail(username)
                 .map(UserDetailsImpl::new)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with such email"));
+        if (userDetails.isEnabled()) return userDetails;
+        throw new EntityBadRequestException("The account isn't enabled");
     }
 }
