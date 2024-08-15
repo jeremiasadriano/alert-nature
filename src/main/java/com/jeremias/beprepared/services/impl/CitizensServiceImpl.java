@@ -68,7 +68,7 @@ public class CitizensServiceImpl implements CitizensService {
         Citizens citizens = this.citizensRepository.findByOtp(otp).orElseThrow(() -> new EntityNotFoundException("Error, opt is invalid!"));
         if (citizens.getOtpDuration().isBefore(LocalDateTime.now())) {
             log.error("Error, opt has expired!");
-            throw new EntityBadRequestException("Your Otp has expired, you can renew using: http://localhost:8080/api/v1/citizens/otp/renew?device=".concat(citizens.getPhone()));
+            throw new EntityBadRequestException("Your Otp has expired, you can renew using: http://localhost:8080/api/v1/citizens/otp/" + citizens.getPhone() + "/renew");
         }
         citizens.setOtp(null);
         citizens.setVerified(true);

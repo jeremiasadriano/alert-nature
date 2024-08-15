@@ -53,8 +53,8 @@ public class CitizensController {
         return ResponseEntity.ok(this.citizensService.verifyAccount(otp));
     }
 
-    @PatchMapping("/otp/renew")
-    public ResponseEntity<String> renewOtp(@RequestParam(name = "device") String phone) {
+    @PatchMapping("/otp/{device}/renew")
+    public ResponseEntity<String> renewOtp(@PathVariable(name = "device") String phone) {
         return new ResponseEntity<>(this.citizensService.renewOtp(phone), HttpStatus.ACCEPTED);
     }
 

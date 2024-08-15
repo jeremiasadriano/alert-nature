@@ -21,7 +21,7 @@ public class UsersAccountInfo {
     private String token;
     private LocalDateTime expirationToken;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     private User user;
 }
