@@ -90,8 +90,18 @@ public class CitizensServiceImpl implements CitizensService {
 
     @Override
     @Transactional
+    public Citizens updateAccount(Citizens citizens, String phone) {
+        var citizenData = getCitizensByPhoneNumber(phone);
+        if (!citizens.getName().isEmpty()) citizenData.setName(citizens.getName());
+        if (!citizens.getPhone().isEmpty()) citizenData.setPhone(citizens.getPhone());
+        if (!citizens.getEmail().isEmpty()) citizenData.setEmail(citizens.getEmail());
+        return this.citizensRepository.save(citizenData);
+    }
+
+    @Override
+    @Transactional
     public String deleteAccount(String deviceNumber) {
-        Citizens citizens = getCitizensByDeviceNumber(deviceNumber);
+        Citizens citizens = getCitizensByPhoneNumber(deviceNumber);
         citizens.setOtp(optGenerator());
         var citizen = this.citizensRepository.save(citizens);
         smsSender.send(citizens.getPhone(), "To delete your account you need to this otp: " + citizen.getOtp());
@@ -101,7 +111,7 @@ public class CitizensServiceImpl implements CitizensService {
     @Override
     @Transactional
     public void confirmAccountDeletion(String otp, String phone) {
-        Citizens citizens = getCitizensByDeviceNumber(phone);
+        Citizens citizens = getCitizensByPhoneNumber(phone);
         if (citizens.getOtp().equals(otp))
             this.citizensRepository.delete(citizens);
         else
@@ -109,7 +119,7 @@ public class CitizensServiceImpl implements CitizensService {
     }
 
     @NonNull
-    private Citizens getCitizensByDeviceNumber(String phone) {
+    private Citizens getCitizensByPhoneNumber(String phone) {
         return this.citizensRepository.findByPhone(phone)
                 .orElseThrow(() -> new EntityBadRequestException("The citizen doesn't have an account registered"));
     }

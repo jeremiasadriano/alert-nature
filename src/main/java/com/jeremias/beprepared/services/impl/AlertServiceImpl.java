@@ -1,9 +1,12 @@
 package com.jeremias.beprepared.services.impl;
 
 import com.jeremias.beprepared.exceptions.handlers.EntityNotFoundException;
+import com.jeremias.beprepared.infra.SmsSender;
 import com.jeremias.beprepared.models.Alert;
+import com.jeremias.beprepared.models.Citizens;
 import com.jeremias.beprepared.repositories.AlertRepository;
 import com.jeremias.beprepared.services.AlertService;
+import com.jeremias.beprepared.services.CitizensService;
 import com.jeremias.beprepared.services.CityService;
 import com.jeremias.beprepared.services.ProvinceService;
 import lombok.RequiredArgsConstructor;
@@ -21,11 +24,12 @@ public class AlertServiceImpl implements AlertService {
     private final AlertRepository alertRepository;
     private final CityService cityService;
     private final ProvinceService provinceService;
+    private final CitizensService citizensService;
+    private final SmsSender smsSender;
 
     @Override
     @Transactional
     public String createAlert(Alert alert, Long cityId, Long provinceId) {
-        log.info("Creating alert...");
         try {
             var city = cityService.getCityById(cityId);
             var province = provinceService.getProvinceById(provinceId);
@@ -33,7 +37,6 @@ public class AlertServiceImpl implements AlertService {
             alert.setCity(city);
             alert.setProvince(province);
             this.alertRepository.save(alert);
-            log.info("Alert created");
         } catch (Exception e) {
             log.error("Error creating the alert ", e);
         }
@@ -75,6 +78,17 @@ public class AlertServiceImpl implements AlertService {
     @Transactional
     public String activeAlert(Long alertId) {
         Alert alert = this.getAlertById(alertId);
+        List<Citizens> citizens = this.citizensService.getAllCitizensByCityId(alert.getCity().getId());
+        StringBuilder message = new StringBuilder();
+        message.append(alert.getTitle()).append("\n");
+        message.append(alert.getProvince().getDesignation()).append(" city of ");
+        message.append(alert.getCity().getDesignation()).append("\n");
+        message.append(alert.getMessage()).append(" ");
+        message.append(alert.getSeverity().name());
+
+        for (Citizens citizen : citizens) {
+            smsSender.send(citizen.getPhone(), message.toString());
+        }
         alert.setStatus(true);
         this.alertRepository.save(alert);
         return "Status updated successfully";

@@ -15,5 +15,5 @@ public interface UserService {
 
     String updateUser(User user, UserDetailsImpl username);
 
-    User getUserByEmail(String email);
+    void deleteUser(UserDetailsImpl userDetails);
 }

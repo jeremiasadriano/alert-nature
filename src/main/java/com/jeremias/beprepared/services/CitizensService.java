@@ -19,6 +19,8 @@ public interface CitizensService {
 
     String renewOtp(String deviceId);
 
+    Citizens updateAccount(Citizens citizens, String phone);
+
     String deleteAccount(String deviceNumber);
 
     void confirmAccountDeletion(String otp, String deviceNumber);

@@ -69,7 +69,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return this.userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found!"));
+    public void deleteUser(UserDetailsImpl userDetails) {
+        User user = this.getPrincipal(userDetails);
+        this.userRepository.delete(user);
     }
 }

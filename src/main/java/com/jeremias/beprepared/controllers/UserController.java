@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -42,6 +43,12 @@ public class UserController {
     @PutMapping("/")
     public ResponseEntity<String> updateUser(@Valid @RequestBody UserRequest userRequest, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok(userService.updateUser(modelMapper.map(userRequest, User.class), userDetails));
+    }
+
+    @DeleteMapping("/")
+    public ResponseEntity<String> deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        this.userService.deleteUser(userDetails);
+        return new ResponseEntity<>("User deleted!", HttpStatus.NO_CONTENT);
     }
 }
 

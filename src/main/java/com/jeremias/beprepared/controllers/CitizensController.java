@@ -58,6 +58,12 @@ public class CitizensController {
         return new ResponseEntity<>(this.citizensService.renewOtp(phone), HttpStatus.ACCEPTED);
     }
 
+    @PutMapping("/update/{device}")
+    public ResponseEntity<CitizensResponse> updateAccount(@RequestBody CitizensRequest citizensRequest, @PathVariable(name = "device") String phone) {
+        Citizens citizens = this.bePreparedMapper.mapCitizens(citizensRequest);
+        return new ResponseEntity<>(bePreparedMapper.mapCitizens(this.citizensService.updateAccount(citizens, phone)), HttpStatus.ACCEPTED);
+    }
+
     @PatchMapping("/delete/{device}")
     public ResponseEntity<String> deleteAccount(@PathVariable(name = "device") String phone) {
         return new ResponseEntity<>(this.citizensService.deleteAccount(phone), HttpStatus.ACCEPTED);
