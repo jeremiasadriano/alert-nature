@@ -2,6 +2,7 @@ package com.jeremias.beprepared.services.impl;
 
 import com.jeremias.beprepared.exceptions.handlers.EntityBadRequestException;
 import com.jeremias.beprepared.exceptions.handlers.EntityNotFoundException;
+import com.jeremias.beprepared.infra.SmsSender;
 import com.jeremias.beprepared.models.Citizens;
 import com.jeremias.beprepared.repositories.CitizensRepository;
 import com.jeremias.beprepared.services.CitizensService;
@@ -24,6 +25,7 @@ import java.util.Random;
 public class CitizensServiceImpl implements CitizensService {
     private final CitizensRepository citizensRepository;
     private final CityService cityService;
+    private final SmsSender smsSender;
 
     @Override
     @Transactional
@@ -34,10 +36,13 @@ public class CitizensServiceImpl implements CitizensService {
         citizens.setVerified(false);
         citizens.setOtp(optGenerator());
         Citizens citizen = this.citizensRepository.save(citizens);
-        return "Citizen created successful, Your OTP is: " + citizen.getOtp();
+        smsSender.send(citizen.getPhone(), "Your confirmation code is: " + citizen.getOtp());
+        return "Citizen created successful, please check your inbox";
     }
 
     @Override
+
+
     public List<Citizens> getAllCitizens() {
         return this.citizensRepository.findAll();
     }
@@ -63,7 +68,7 @@ public class CitizensServiceImpl implements CitizensService {
         Citizens citizens = this.citizensRepository.findByOtp(otp).orElseThrow(() -> new EntityNotFoundException("Error, opt is invalid!"));
         if (citizens.getOtpDuration().isBefore(LocalDateTime.now())) {
             log.error("Error, opt has expired!");
-            throw new EntityBadRequestException("Your Otp has expired, you can renew using: http://localhost:8080/api/v1/citizens/otp/renew?device=".concat(citizens.getDeviceId()));
+            throw new EntityBadRequestException("Your Otp has expired, you can renew using: http://localhost:8080/api/v1/citizens/otp/renew?device=".concat(citizens.getPhone()));
         }
         citizens.setOtp(null);
         citizens.setVerified(true);
@@ -73,13 +78,40 @@ public class CitizensServiceImpl implements CitizensService {
 
     @Override
     @Transactional
-    public String renewOtp(String deviceId) {
-        Citizens citizens = this.citizensRepository.findByDeviceId(deviceId).orElseThrow(() -> new EntityNotFoundException("Citizens not found!"));
+    public String renewOtp(String phone) {
+        Citizens citizens = this.citizensRepository.findByPhone(phone).orElseThrow(() -> new EntityNotFoundException("Citizens not found!"));
         if (citizens.getOtp() == null) throw new EntityBadRequestException("The Citizens is already activated");
         citizens.setOtp(optGenerator());
         citizens.setOtpDuration(LocalDateTime.now().plusMinutes(10L));
         Citizens citizen = this.citizensRepository.save(citizens);
-        return "Your new Otp is: " + citizen.getOtp();
+        smsSender.send(citizen.getPhone(), "Your new OTP is: " + citizen.getOtp());
+        return "OTP renewed successful, please check your inbox";
+    }
+
+    @Override
+    @Transactional
+    public String deleteAccount(String deviceNumber) {
+        Citizens citizens = getCitizensByDeviceNumber(deviceNumber);
+        citizens.setOtp(optGenerator());
+        var citizen = this.citizensRepository.save(citizens);
+        smsSender.send(citizens.getPhone(), "To delete your account you need to this otp: " + citizen.getOtp());
+        return "Please check your inbox";
+    }
+
+    @Override
+    @Transactional
+    public void confirmAccountDeletion(String otp, String phone) {
+        Citizens citizens = getCitizensByDeviceNumber(phone);
+        if (citizens.getOtp().equals(otp))
+            this.citizensRepository.delete(citizens);
+        else
+            throw new EntityBadRequestException("The otp inserted is invalid");
+    }
+
+    @NonNull
+    private Citizens getCitizensByDeviceNumber(String phone) {
+        return this.citizensRepository.findByPhone(phone)
+                .orElseThrow(() -> new EntityBadRequestException("The citizen doesn't have an account registered"));
     }
 
     @NonNull

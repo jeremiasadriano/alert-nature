@@ -7,8 +7,9 @@ import lombok.Data;
 @Builder
 public class CitizensResponse {
     private Long id;
+    private String name;
     private String phone;
-    private String deviceId;
+    private String email;
     private String city;
     private String province;
     private boolean verified;

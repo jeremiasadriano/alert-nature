@@ -14,6 +14,11 @@ app:
   secret:
     key: ${APP.SECRET.KEY}
     expiration-time: ${APP.SECRET.EXPIRATION}
+  services:
+    sms:
+      account-sid: ${APP.SERVICES.SMS.ACCOUNT-SID}
+      auth-token: ${APP.SERVICES.SMS.AUTH-TOKEN}
+      number-from: ${APP.SERVICES.SMS.NUMBER-FROM}
 logging:
   file:
     name: bePrepared.log

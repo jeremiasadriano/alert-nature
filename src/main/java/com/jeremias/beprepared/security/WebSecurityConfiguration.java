@@ -27,8 +27,8 @@ public class WebSecurityConfiguration {
     private final CorsConfigurationSource corsConfigurationSource;
     private final String[] AUTH_URIS = {"/api/v1/auth/**"};
     private final String[] ALLOWED_URIS = {
-            "/api/v1/citizens/",
-            "api/v1/locations/**",
+            "/api/v1/citizens/**",
+            "/api/v1/locations/**",
             "/api/v1/citizens/verify",
             "/api/v1/citizens/otp/renew",
             "/api/v1/users/**"

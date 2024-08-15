@@ -65,7 +65,6 @@ public class AlertController {
     @PatchMapping("/{alertId}/active")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> activeAlert(@PathVariable Long alertId) {
-        String alert = this.alertService.activeAlert(alertId);
-        return ResponseEntity.ok(alert);
+        return ResponseEntity.ok(this.alertService.activeAlert(alertId));
     }
 }

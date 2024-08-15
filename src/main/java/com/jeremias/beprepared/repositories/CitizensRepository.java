@@ -13,7 +13,7 @@ public interface CitizensRepository extends JpaRepository<Citizens, Long> {
 
     Optional<Citizens> findByOtp(String otp);
 
-    Optional<Citizens> findByDeviceId(String deviceId);
+    Optional<Citizens> findByPhone(String phone);
 
     List<Citizens> findAllByCityProvinceId(Long provinceId);
 }

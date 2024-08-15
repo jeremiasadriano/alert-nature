@@ -41,8 +41,9 @@ public class BePreparedMapper {
     public CitizensResponse mapCitizens(Citizens citizens) {
         return CitizensResponse.builder()
                 .id(citizens.getId())
+                .name(citizens.getName())
                 .phone(citizens.getPhone())
-                .deviceId(citizens.getDeviceId())
+                .email(citizens.getEmail())
                 .city(citizens.getCity().getDesignation())
                 .province(citizens.getCity().getProvince().getDesignation())
                 .verified(citizens.isVerified())

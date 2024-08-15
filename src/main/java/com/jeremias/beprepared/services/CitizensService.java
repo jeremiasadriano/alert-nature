@@ -18,4 +18,8 @@ public interface CitizensService {
     String verifyAccount(String otp);
 
     String renewOtp(String deviceId);
+
+    String deleteAccount(String deviceNumber);
+
+    void confirmAccountDeletion(String otp, String deviceNumber);
 }

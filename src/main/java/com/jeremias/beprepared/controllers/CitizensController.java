@@ -54,7 +54,18 @@ public class CitizensController {
     }
 
     @PatchMapping("/otp/renew")
-    public ResponseEntity<String> renewOtp(@RequestParam(name = "device") String deviceId) {
-        return new ResponseEntity<>(this.citizensService.renewOtp(deviceId), HttpStatus.ACCEPTED);
+    public ResponseEntity<String> renewOtp(@RequestParam(name = "device") String phone) {
+        return new ResponseEntity<>(this.citizensService.renewOtp(phone), HttpStatus.ACCEPTED);
+    }
+
+    @PatchMapping("/delete/{device}")
+    public ResponseEntity<String> deleteAccount(@PathVariable(name = "device") String phone) {
+        return new ResponseEntity<>(this.citizensService.deleteAccount(phone), HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/delete/{device}/confirmation")
+    public ResponseEntity<String> confirmAccountDeletion(@RequestParam String otp, @PathVariable(name = "device") String phone) {
+        this.citizensService.confirmAccountDeletion(otp, phone);
+        return new ResponseEntity<>("Account deleted, we'll miss you", HttpStatus.NO_CONTENT);
     }
 }

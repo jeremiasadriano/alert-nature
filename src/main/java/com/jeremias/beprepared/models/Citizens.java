@@ -19,9 +19,11 @@ public class Citizens {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Citizens_gen")
     private Long id;
+    private String name;
     @Column(unique = true)
     private String phone;
-    private String deviceId;
+    @Column(unique = true)
+    private String email;
     @Column(length = 6)
     private String otp;
     private LocalDateTime otpDuration;
