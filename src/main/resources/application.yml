@@ -3,19 +3,19 @@ spring:
     name: 'bePrepared'
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${APP.BD.URL}
-    username: ${APP.BD.USER}
-    password: ${APP.BD.PASS}
+    url: ${APP_BD_URL}
+    username: ${APP_BD_USER}
+    password: ${APP_BD_PASS}
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
   mail:
-    host: ${SPRING.MAIL.HOST}
-    port: ${SPRING.MAIL.PORT}
-    username: ${SPRING.MAIL.USER}
-    password: ${SPRING.MAIL.PASS}
-    sender-name: ${SPRING.MAIL.SENDER-NAME}
+    host: ${SPRING_MAIL_HOST}
+    port: ${SPRING_MAIL_PORT}
+    username: ${SPRING_MAIL_USER}
+    password: ${SPRING_MAIL_PASS}
+    sender-name: ${SPRING_MAIL_SENDER_NAME}
     properties:
       mail:
         smtp:
@@ -24,13 +24,13 @@ spring:
             enable: true
 app:
   secret:
-    key: ${APP.SECRET.KEY}
-    expiration-time: ${APP.SECRET.EXPIRATION}
+    key: ${APP_SECRET_KEY}
+    expiration-time: ${APP_SECRET_EXPIRATION}
   services:
     sms:
-      account-sid: ${APP.SERVICES.SMS.ACCOUNT-SID}
-      auth-token: ${APP.SERVICES.SMS.AUTH-TOKEN}
-      number-from: ${APP.SERVICES.SMS.NUMBER-FROM}
+      account-sid: ${APP_SERVICES_SMS_ACCOUNT_SID}
+      auth-token: ${APP_SERVICES_SMS_AUTH_TOKEN}
+      number-from: ${APP_SERVICES_SMS_NUMBER_FROM}
 logging:
   file:
     name: bePrepared.log
