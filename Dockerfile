@@ -5,7 +5,7 @@ RUN apt-get update -y &&  \
 COPY . .
 RUN mvn clean install -DskipTests
 
-FROM openjdk:17 AS java
+FROM openjdk:17-alpine AS java
 
 EXPOSE 8080
 

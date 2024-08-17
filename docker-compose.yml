@@ -11,7 +11,7 @@ services:
       - db
   db:
     container_name: 'alertNotification'
-    image: postgres:16.0
+    image: postgres:16-alpine
     restart: on-failure
     environment:
       POSTGRES_DB: ${APP_BD}
