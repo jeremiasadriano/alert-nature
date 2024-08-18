@@ -55,6 +55,10 @@ Before you start, ensure you have the following installed:
     ```bash
     docker-compose up --build
     ```
+    Also you can download the application image from [docker hub](https://hub.docker.com/r/godalway/alert-nature):
+     ```bash
+      docker pull godalway/alert-nature:1.0
+      ```
 
 ### Manual Setup
 1. Clone the repository
