@@ -126,11 +126,10 @@ public class CitizensServiceImpl implements CitizensService {
 
     @NonNull
     private static String optGenerator() {
-        char[] chars = new char[6];
-        for (int i = 0; i < chars.length; i++) {
-            int randomNumbers = new Random().nextInt(9);
-            chars[i] = Integer.toString(randomNumbers).toCharArray()[0];
+        StringBuilder otp = new StringBuilder(6);
+        for (int i = 0; i < 6; i++) {
+            otp.append(new Random().nextInt(9));
         }
-        return new String(chars).trim();
+        return otp.toString();
     }
 }
